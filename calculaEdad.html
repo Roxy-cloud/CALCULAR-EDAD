@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Edad</title>
+
+    <style type="text/css">
+        
+.enviar-btn{
+    background-color: white;    color: #3b3daa;    border: solid .1rem #3b62aa;	border-radius: 20%;	font-size: 15px;    cursor: pointer;
+    align-items: center;
+}
+
+.enviar-btn:hover{
+    background-color: #3b62aa;     color: white;    border-style: none;	border-radius:20%; 
+} 
+      </style>
+</head>
+
+<body align="center" valign="middle" bgcolor="#EEE9E9">
+
+    <script type="text/javascript">
+        /** Funcion que devuelve true o false dependiendo de si la fecha es correcta. Tiene que recibir el dia, mes y año */
+        function isValidDate(day,month,year)
+        {
+            var dteDate;
+         
+            //   siendo 0 el mes de enero Por esta razon, tenemos que restar 1 al mes
+            month=month-1;
+           
+            dteDate=new Date(year,month,day);
+         
+            //Devuelva true o false...
+            return ((day==dteDate.getDate()) && (month==dteDate.getMonth()) && (year==dteDate.getFullYear()));
+        }
+         
+        /** para validar una fecha **/
+   
+        function validate_fecha(fecha)
+        {
+            var patron=new RegExp("^(19|20)+([0-9]{2})([-])([0-9]{1,2})([-])([0-9]{1,2})$");
+         
+            if(fecha.search(patron)==0)
+            {
+                var values=fecha.split("-");
+                if(isValidDate(values[2],values[1],values[0]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+         
+        
+        function calcularEdad()
+        {
+            var fecha=document.getElementById("user_date").value;
+            if(validate_fecha(fecha)==true)
+            {
+                // Si la fecha es correcta, calculamos la edad
+                var values=fecha.split("-");
+                var mes = values[1];
+                var ano = values[0];
+         
+                // cogemos los valores actuales
+                var fecha_hoy = new Date();
+                var ahora_ano = fecha_hoy.getYear();
+                var ahora_mes = fecha_hoy.getMonth()+1;
+                        
+                // realizamos el calculo
+                var edad = (ahora_ano + 1900) - ano;
+                if ( ahora_mes < mes )
+                {
+                    edad--;
+                }
+                       
+                // calculamos los meses
+                var meses=0;
+                if(ahora_mes>mes)
+                    meses=ahora_mes-mes;
+                if(ahora_mes<mes)
+                    meses=12-(mes-ahora_mes);
+             
+                document.getElementById("resultado").innerHTML="<H3>"+"tu edad es "+edad+" años, y "+ meses + " meses";
+            }else{
+                document.getElementById("resultado").innerHTML="<h4>"+"por favor, introduzca datos validos...!!!";
+            }
+        }
+        </script>
+
+    <form action="#" name="formulario">
+
+        <div> 
+            
+            <h1> Saludos, usuario!</h1>
+           <p> este programa contiene elementos javascript para calcular la edad de una persona a partir de un objeto <b>Date</b>. </p>
+        </div>
+        <label for="edad"> <h2>Introduzca su Fecha de Nacimiento.</h2> luego Da Click en el boton para obtener un resultado.</label>
+        <table align="center" cellpadding="8" cellspacing="8">
+            <tr>
+
+                <td align="center">
+                      <input type="date" name="user_date" id="user_date" />
+                </td>
+            </tr>
+            <tr>             
+                <td align="center">
+                  <input type="button" class="enviar-btn" value="Calcular" onclick="javascript:calcularEdad();" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <div id="resultado"></div>            
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
